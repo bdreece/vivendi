@@ -1,31 +1,33 @@
 ﻿using System.Diagnostics;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Vivendi.UI.Models;
 
-namespace Vivendi.UI.Controllers;
-
-public class HomeController : Controller
+namespace Vivendi.UI.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    internal sealed class HomeController : Controller
     {
-        _logger = logger;
-    }
+        public HomeController(IMediator mediator,
+            ILogger<HomeController> logger)
+                : base(mediator, logger) { }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        [HttpGet]
+        [ResponseCache(Duration = 86400,
+                       Location = ResponseCacheLocation.Any)]
+        public IActionResult Index() => View();
 
-    public IActionResult Privacy()
-    {
-        return View();
+        [HttpGet]
+        [ResponseCache(Duration = 0,
+                       Location = ResponseCacheLocation.None,
+                       NoStore = true)]
+        public IActionResult Error() =>
+            View(new ErrorViewModel(Activity.Current?.Id ??
+                HttpContext.TraceIdentifier));
     }
+}
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+namespace Vivendi.UI.Models
+{
+    internal sealed record HomeViewModel(ProfileViewModel? Profile);
+    internal sealed record ErrorViewModel(string RequestId);
 }

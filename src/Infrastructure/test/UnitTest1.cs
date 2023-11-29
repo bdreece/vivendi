@@ -1,4 +1,4 @@
-namespace Vivendi.Data.Testing;
+namespace Vivendi.Infrastructure.Testing;
 
 public class Tests
 {
