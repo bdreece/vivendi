@@ -22,12 +22,12 @@ namespace Vivendi.UI.Controllers
                        NoStore = true)]
         public IActionResult Error() =>
             View(new ErrorViewModel(Activity.Current?.Id ??
-                HttpContext.TraceIdentifier));
+                HttpContext.TraceIdentifier, true));
     }
 }
 
 namespace Vivendi.UI.Models
 {
-    internal sealed record HomeViewModel(ProfileViewModel? Profile);
-    internal sealed record ErrorViewModel(string RequestId);
+    internal sealed record HomeViewModel(Profile? Profile);
+    internal sealed record ErrorViewModel(string RequestId, bool DisplayRequestId);
 }
